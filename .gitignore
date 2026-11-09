@@ -1,0 +1,17 @@
+# Generated build output
+**/bin/
+**/obj/
+.vs/
+.idea/
+# Local secrets (do not commit passwords or tokens)
+.env
+.env.*
+**/secrets.json
+appsettings.Local.json
+appsettings.Production.json
+# Development editor logs
+*.user
+*.suo
+
+# Local ASP.NET Core configuration
+appsettings*.json
