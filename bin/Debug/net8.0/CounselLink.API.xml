@@ -1,0 +1,654 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CounselLink.API</name>
+    </assembly>
+    <members>
+        <member name="M:CounselLink.API.Controllers.AppointmentsController.Select(CounselLink.API.DTOs.AppointmentFilterDto)">
+            <summary>GET /api/appointments -> dbo.spAppointment_Select (with query filters)</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.AppointmentsController.Insert(CounselLink.API.DTOs.CreateAppointmentDto)">
+            <summary>POST /api/appointments -> dbo.spAppointment_Insert</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.AppointmentsController.Update(System.Int32,CounselLink.API.DTOs.UpdateAppointmentDto)">
+            <summary>PUT /api/appointments/{id} -> dbo.spAppointment_Update</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.AppointmentsController.Delete(System.Int32)">
+            <summary>DELETE /api/appointments/{id} -> dbo.spAppointment_Delete</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.AppointmentsController.Confirm(System.Int32,CounselLink.API.DTOs.ConfirmAppointmentDto)">
+            <summary>PUT /api/appointments/{id}/confirm -> dbo.spConfirmAppointment</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.AppointmentsController.StudentConfirm(System.Int32,CounselLink.API.DTOs.StudentIdNumberDto)">
+            <summary>PUT /api/appointments/{id}/student-confirm -> dbo.spStudentConfirmAppointment</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.AppointmentsController.Complete(System.Int32)">
+            <summary>PUT /api/appointments/{id}/complete -> dbo.spCompleteAppointment</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.AppointmentsController.Reschedule(System.Int32,CounselLink.API.DTOs.RescheduleDto)">
+            <summary>POST /api/appointments/{id}/reschedule -> dbo.spRescheduleAppointment</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.AppointmentsController.AcceptReschedule(System.Int32,CounselLink.API.DTOs.StudentIdNumberDto)">
+            <summary>PUT /api/appointments/{id}/accept-reschedule -> dbo.spStudentAcceptReschedule</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.AppointmentsController.NoShow(System.Int32)">
+            <summary>PUT /api/appointments/{id}/no-show -> dbo.spSetAppointmentNoShow</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.AppointmentsController.RescheduleHistory(System.String)">
+            <summary>GET /api/appointments/reschedule-history -> dbo.spGetCounselorRescheduleHistory</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.ClinicalController.InsertSession(CounselLink.API.DTOs.CounselingSessionDto)">
+            <summary>POST /api/clinical/sessions -> dbo.spCounselingSession_Insert</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.ClinicalController.SelectSessions(CounselLink.API.DTOs.CounselingSessionFilterDto)">
+            <summary>GET /api/clinical/sessions -> dbo.spCounselingSession_Select</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.ClinicalController.InsertAssessment(CounselLink.API.DTOs.StudentAssessmentDto)">
+            <summary>POST /api/clinical/assessments -> dbo.spStudentAssessment_Insert</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.ClinicalController.SelectAssessments(CounselLink.API.DTOs.StudentAssessmentFilterDto)">
+            <summary>GET /api/clinical/assessments -> dbo.spStudentAssessment_Select</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.ClinicalController.InsertFollowUp(CounselLink.API.DTOs.SessionFollowUpDto)">
+            <summary>POST /api/clinical/follow-ups -> dbo.spSessionFollowUp_Insert</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.ClinicalController.SelectFollowUps(CounselLink.API.DTOs.SessionFollowUpFilterDto)">
+            <summary>GET /api/clinical/follow-ups -> dbo.spSessionFollowUp_Select</summary>
+        </member>
+        <member name="T:CounselLink.API.Controllers.ConstantsController">
+            <summary>
+            CRUD for the constant lookup tables. {type} selects the stored-procedure
+            family: spConst{Type}_{Select|Insert|Update|Delete}. Supported types:
+            AppointmentType, ConcernType, AttendanceStatus, AppointmentStatus,
+            SessionType, SpecialistReferral.
+            </summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.ConstantsController.Select(System.String)">
+            <summary>GET /api/constants/{type} -> spConst{Type}_Select</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.ConstantsController.Insert(System.String,CounselLink.API.DTOs.ConstantDto)">
+            <summary>POST /api/constants/{type} -> spConst{Type}_Insert</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.ConstantsController.Update(System.String,CounselLink.API.DTOs.ConstantDto)">
+            <summary>PUT /api/constants/{type} -> spConst{Type}_Update</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.ConstantsController.Delete(System.String,System.Int32)">
+            <summary>DELETE /api/constants/{type}/{id} -> spConst{Type}_Delete</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.CounselorsController.Select">
+            <summary>GET /api/counselors -> dbo.spCounselor_Select</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.CounselorsController.Insert(CounselLink.API.DTOs.CounselorDto)">
+            <summary>POST /api/counselors -> dbo.spCounselor_Insert</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.CounselorsController.Update(CounselLink.API.DTOs.CounselorDto)">
+            <summary>PUT /api/counselors -> dbo.spCounselor_Update</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.CounselorsController.Delete(System.String)">
+            <summary>DELETE /api/counselors/{employeeId} -> dbo.spCounselor_Delete</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.CounselorAssignmentsController.Select">
+            <summary>GET /api/counselor-assignments -> dbo.spCounselorAssignment_Select</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.CounselorAssignmentsController.Insert(CounselLink.API.DTOs.CounselorAssignmentDto)">
+            <summary>POST /api/counselor-assignments -> dbo.spCounselorAssignment_Insert</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.NotificationsController.Select(CounselLink.API.DTOs.NotificationFilterDto)">
+            <summary>GET /api/notifications -> dbo.spNotification_Select</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.NotificationsController.Insert(CounselLink.API.DTOs.NotificationDto)">
+            <summary>POST /api/notifications -> dbo.spNotification_Insert</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.ReportsController.Completed(CounselLink.API.DTOs.MonthlyReportFilterDto)">
+            <summary>GET /api/reports/monthly/completed -> dbo.sp_GenerateMonthlyReport_CompletedAppointments</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.ReportsController.Concerns(CounselLink.API.DTOs.MonthlyReportFilterDto)">
+            <summary>GET /api/reports/monthly/concerns -> dbo.sp_GenerateMonthlyReport_ConcernFrequency</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.ReportsController.Modes(CounselLink.API.DTOs.MonthlyReportFilterDto)">
+            <summary>GET /api/reports/monthly/modes -> dbo.sp_GenerateMonthlyReport_SessionModes</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.ReportsController.Referrals(CounselLink.API.DTOs.MonthlyReportFilterDto)">
+            <summary>GET /api/reports/monthly/referrals -> dbo.sp_GenerateMonthlyReport_ExternalReferrals</summary>
+        </member>
+        <member name="M:CounselLink.API.Controllers.ReportsController.Masterlist">
+            <summary>GET /api/reports/masterlist -> dbo.sp_GetAppointmentMasterlist</summary>
+        </member>
+        <member name="T:CounselLink.API.Data.IDbConnectionFactory">
+            <summary>
+            Creates database connections for repositories, centralizing connection-string
+            resolution so repositories never build connection strings themselves.
+            </summary>
+        </member>
+        <member name="M:CounselLink.API.Data.IDbConnectionFactory.CreateConnection">
+            <summary>Creates a new, unopened connection to CounselLinkDB.</summary>
+        </member>
+        <member name="T:CounselLink.API.Data.OutputParameters">
+            <summary>
+            Helpers for the standard @Message / @NewID output-parameter convention used
+            by all INSERT/UPDATE/DELETE stored procedures.
+            </summary>
+        </member>
+        <member name="M:CounselLink.API.Data.OutputParameters.AddStandardOutputs(Dapper.DynamicParameters)">
+            <summary>Adds the standard @Message (VARCHAR(255)) and @NewID (INT) output parameters.</summary>
+        </member>
+        <member name="M:CounselLink.API.Data.OutputParameters.AddMessageOutput(Dapper.DynamicParameters)">
+            <summary>
+            Adds only the @Message (VARCHAR(255)) output parameter, for procedures
+            that do not declare @NewID (e.g. spAppointment_Update).
+            </summary>
+        </member>
+        <member name="M:CounselLink.API.Data.OutputParameters.ReadWriteResult(Dapper.DynamicParameters)">
+            <summary>Reads the standard outputs into a <see cref="T:CounselLink.API.DTOs.WriteResult"/>.</summary>
+        </member>
+        <member name="M:CounselLink.API.Data.OutputParameters.ReadMessageResult(Dapper.DynamicParameters)">
+            <summary>Reads only the @Message output into a <see cref="T:CounselLink.API.DTOs.WriteResult"/> (NewId stays null).</summary>
+        </member>
+        <member name="T:CounselLink.API.Data.SqlConnectionFactory">
+            <summary>
+            SQL Server implementation of <see cref="T:CounselLink.API.Data.IDbConnectionFactory"/> reading the
+            "DefaultConnection" connection string from configuration.
+            </summary>
+        </member>
+        <member name="T:CounselLink.API.DTOs.UpdateAppointmentDto">
+            <summary>
+            Request payload for PUT /api/appointments/{id}. Property names match the
+            dbo.spAppointment_Update parameters exactly (the appointment id comes from
+            the route and is supplied as @AppointmentID by the repository).
+            </summary>
+        </member>
+        <member name="P:CounselLink.API.DTOs.UpdateAppointmentDto.AppointmentStatusID">
+            <summary>Appointment status id.</summary>
+            <example>2</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.UpdateAppointmentDto.AttendanceStatusID">
+            <summary>Attendance status id.</summary>
+            <example>1</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.UpdateAppointmentDto.RescheduleNote">
+            <summary>Optional reschedule note.</summary>
+            <example>Moved to a later slot at the student's request.</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.UpdateAppointmentDto.ConcernDescription">
+            <summary>Primary concern description.</summary>
+            <example>Academic stress and time management</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.UpdateAppointmentDto.OtherConcernDetail">
+            <summary>Free-text detail when the concern type is "Other".</summary>
+            <example>Difficulty balancing part-time work and studies</example>
+        </member>
+        <member name="T:CounselLink.API.DTOs.CreateAppointmentDto">
+            <summary>
+            Request payload for POST /api/appointments. Property names match the
+            dbo.spAppointment_Insert parameters exactly.
+            </summary>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CreateAppointmentDto.IDNumber">
+            <summary>Student ID number.</summary>
+            <example>2023001</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CreateAppointmentDto.GradeOrYearLevel">
+            <summary>Grade or year level.</summary>
+            <example>4</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CreateAppointmentDto.ProgramOrCourse">
+            <summary>Program or course.</summary>
+            <example>BS Information Technology</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CreateAppointmentDto.EmployeeID">
+            <summary>Assigned counselor employee id.</summary>
+            <example>EMP-1001</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CreateAppointmentDto.AppointmentDate">
+            <summary>Appointment date (YYYY-MM-DD).</summary>
+            <example>2026-10-26</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CreateAppointmentDto.AppointmentTime">
+            <summary>Appointment time (HH:mm:ss).</summary>
+            <example>08:30:00</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CreateAppointmentDto.AppointmentTypeID">
+            <summary>Appointment type id.</summary>
+            <example>1</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CreateAppointmentDto.AppointmentStatusID">
+            <summary>Appointment status id.</summary>
+            <example>1</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CreateAppointmentDto.AttendanceStatusID">
+            <summary>Attendance status id.</summary>
+            <example>1</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CreateAppointmentDto.ConcernDescription">
+            <summary>Primary concern description.</summary>
+            <example>Academic stress and time management</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CreateAppointmentDto.OtherConcernDetail">
+            <summary>Free-text detail when the concern type is "Other".</summary>
+            <example>Difficulty balancing part-time work and studies</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CreateAppointmentDto.ReferredBy">
+            <summary>Who referred the student, if applicable.</summary>
+            <example>Prof. Dela Cruz</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CreateAppointmentDto.ReferralDate">
+            <summary>Referral date (YYYY-MM-DD), if applicable.</summary>
+            <example>2026-10-20</example>
+        </member>
+        <member name="T:CounselLink.API.DTOs.AppointmentFilterDto">
+            <summary>
+            Query filters for spAppointment_Select. Property names map to the exact
+            @Search* stored-procedure parameters.
+            </summary>
+        </member>
+        <member name="P:CounselLink.API.DTOs.AppointmentFilterDto.SearchAppointmentID">
+            <summary>@SearchAppointmentID</summary>
+            <example>1001</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.AppointmentFilterDto.SearchIDNumber">
+            <summary>@SearchIDNumber</summary>
+            <example>2023001</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.AppointmentFilterDto.SearchGradeOrYear">
+            <summary>@SearchGradeOrYear</summary>
+            <example>4</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.AppointmentFilterDto.SearchProgram">
+            <summary>@SearchProgram</summary>
+            <example>BS Information Technology</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.AppointmentFilterDto.SearchEmployeeID">
+            <summary>@SearchEmployeeID</summary>
+            <example>EMP-1001</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.AppointmentFilterDto.SearchStartDate">
+            <summary>@SearchStartDate (YYYY-MM-DD)</summary>
+            <example>2026-10-01</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.AppointmentFilterDto.SearchEndDate">
+            <summary>@SearchEndDate (YYYY-MM-DD)</summary>
+            <example>2026-10-31</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.AppointmentFilterDto.SearchAppointmentTime">
+            <summary>@SearchAppointmentTime (HH:mm:ss)</summary>
+            <example>08:30:00</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.AppointmentFilterDto.SearchAppointmentTypeID">
+            <summary>@SearchAppointmentTypeID</summary>
+            <example>1</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.AppointmentFilterDto.SearchConcernTypeID">
+            <summary>@SearchConcernTypeID</summary>
+            <example>2</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.AppointmentFilterDto.SearchStatusID">
+            <summary>@SearchStatusID</summary>
+            <example>1</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.AppointmentFilterDto.SearchAttendanceID">
+            <summary>@SearchAttendanceID</summary>
+            <example>1</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.AppointmentFilterDto.SearchReferredBy">
+            <summary>@SearchReferredBy</summary>
+            <example>Prof. Dela Cruz</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.AppointmentFilterDto.SearchReferralStart">
+            <summary>@SearchReferralStart (YYYY-MM-DD)</summary>
+            <example>2026-10-01</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.AppointmentFilterDto.SearchReferralEnd">
+            <summary>@SearchReferralEnd (YYYY-MM-DD)</summary>
+            <example>2026-10-31</example>
+        </member>
+        <member name="T:CounselLink.API.DTOs.ConfirmAppointmentDto">
+            <summary>Input for spConfirmAppointment.</summary>
+        </member>
+        <member name="P:CounselLink.API.DTOs.ConfirmAppointmentDto.EmployeeID">
+            <summary>Confirming counselor employee id.</summary>
+            <example>EMP-1001</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.ConfirmAppointmentDto.ConfirmedDate">
+            <summary>Confirmed date (YYYY-MM-DD).</summary>
+            <example>2026-10-26</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.ConfirmAppointmentDto.ConfirmedTime">
+            <summary>Confirmed time (HH:mm:ss).</summary>
+            <example>08:30:00</example>
+        </member>
+        <member name="T:CounselLink.API.DTOs.StudentIdNumberDto">
+            <summary>Input for spStudentConfirmAppointment and spStudentAcceptReschedule.</summary>
+        </member>
+        <member name="P:CounselLink.API.DTOs.StudentIdNumberDto.IDNumber">
+            <summary>Student ID number.</summary>
+            <example>2023001</example>
+        </member>
+        <member name="T:CounselLink.API.DTOs.RescheduleDto">
+            <summary>Input for spRescheduleAppointment.</summary>
+        </member>
+        <member name="P:CounselLink.API.DTOs.RescheduleDto.NewStartDate">
+            <summary>New start date/time (ISO 8601).</summary>
+            <example>2026-11-02T08:30:00</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.RescheduleDto.NewEndDate">
+            <summary>New end date/time (ISO 8601).</summary>
+            <example>2026-11-02T09:15:00</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.RescheduleDto.RescheduleNote">
+            <summary>Reschedule note (required by the procedure).</summary>
+            <example>Counselor unavailable on the original date.</example>
+        </member>
+        <member name="T:CounselLink.API.DTOs.CounselingSessionDto">
+            <summary>Input for spCounselingSession_Insert.</summary>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CounselingSessionDto.SessionID">
+            <summary>Session id (0 for new).</summary>
+            <example>0</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CounselingSessionDto.AppointmentID">
+            <summary>Related appointment id.</summary>
+            <example>1001</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CounselingSessionDto.EmployeeID">
+            <summary>Counselor employee id (derived from the appointment if omitted).</summary>
+            <example>EMP0001</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CounselingSessionDto.IDNumber">
+            <summary>Student ID number (derived from the appointment if omitted).</summary>
+            <example>2023001</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CounselingSessionDto.SessionTypeID">
+            <summary>Session type id.</summary>
+            <example>1</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CounselingSessionDto.SessionDate">
+            <summary>Session date (ISO 8601 UTC).</summary>
+            <example>2026-10-26T08:30:00Z</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CounselingSessionDto.SessionStartTime">
+            <summary>Session start time (ISO 8601 UTC).</summary>
+            <example>2026-10-26T08:30:00Z</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CounselingSessionDto.SessionEndTime">
+            <summary>Session end time (ISO 8601 UTC).</summary>
+            <example>2026-10-26T09:15:00Z</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CounselingSessionDto.GeneralNotes">
+            <summary>General session notes (required by the procedure).</summary>
+            <example>Discussed academic goals</example>
+        </member>
+        <member name="T:CounselLink.API.DTOs.CounselingSessionFilterDto">
+            <summary>Filters for spCounselingSession_Select.</summary>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CounselingSessionFilterDto.SearchIDNumber">
+            <summary>@SearchIDNumber</summary>
+            <example>2023001</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CounselingSessionFilterDto.SearchEmployeeID">
+            <summary>@SearchEmployeeID</summary>
+            <example>EMP0001</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CounselingSessionFilterDto.SearchAppointmentID">
+            <summary>@SearchAppointmentID</summary>
+            <example>1001</example>
+        </member>
+        <member name="T:CounselLink.API.DTOs.StudentAssessmentDto">
+            <summary>Input for spStudentAssessment_Insert.</summary>
+        </member>
+        <member name="P:CounselLink.API.DTOs.StudentAssessmentDto.AssessmentID">
+            <summary>Assessment id (0 for new).</summary>
+            <example>0</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.StudentAssessmentDto.SessionID">
+            <summary>Related session id.</summary>
+            <example>5001</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.StudentAssessmentDto.ProgressNotes">
+            <summary>Progress notes.</summary>
+            <example>Client showing progress</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.StudentAssessmentDto.IsFollowUpNeeded">
+            <summary>Whether a follow-up is needed.</summary>
+            <example>true</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.StudentAssessmentDto.IsForMonitoring">
+            <summary>Whether the student is flagged for monitoring.</summary>
+            <example>false</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.StudentAssessmentDto.SpecialistReferralID">
+            <summary>Specialist referral id, if any.</summary>
+            <example>1</example>
+        </member>
+        <member name="T:CounselLink.API.DTOs.StudentAssessmentFilterDto">
+            <summary>Filters for spStudentAssessment_Select.</summary>
+        </member>
+        <member name="P:CounselLink.API.DTOs.StudentAssessmentFilterDto.SearchAssessmentID">
+            <summary>@SearchAssessmentID</summary>
+            <example>6001</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.StudentAssessmentFilterDto.SearchSessionID">
+            <summary>@SearchSessionID</summary>
+            <example>5001</example>
+        </member>
+        <member name="T:CounselLink.API.DTOs.SessionFollowUpDto">
+            <summary>Input for spSessionFollowUp_Insert.</summary>
+        </member>
+        <member name="P:CounselLink.API.DTOs.SessionFollowUpDto.FollowUpID">
+            <summary>Follow-up id (0 for new).</summary>
+            <example>0</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.SessionFollowUpDto.AssessmentID">
+            <summary>Related assessment id.</summary>
+            <example>6001</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.SessionFollowUpDto.TargetDate">
+            <summary>Target date (YYYY-MM-DD).</summary>
+            <example>2026-11-01</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.SessionFollowUpDto.FollowUpStatus">
+            <summary>Follow-up status (Pending, Completed, or Cancelled).</summary>
+            <example>Pending</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.SessionFollowUpDto.ActionRequired">
+            <summary>Action required (required by the procedure).</summary>
+            <example>Check grade report</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.SessionFollowUpDto.ResolutionNotes">
+            <summary>Resolution notes, if any.</summary>
+            <example>Reviewed updated grades with the student.</example>
+        </member>
+        <member name="T:CounselLink.API.DTOs.SessionFollowUpFilterDto">
+            <summary>Filters for spSessionFollowUp_Select.</summary>
+        </member>
+        <member name="P:CounselLink.API.DTOs.SessionFollowUpFilterDto.SearchAssessmentID">
+            <summary>@SearchAssessmentID</summary>
+            <example>6001</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.SessionFollowUpFilterDto.SearchStatus">
+            <summary>@SearchStatus (Pending, Completed, Cancelled).</summary>
+            <example>Pending</example>
+        </member>
+        <member name="T:CounselLink.API.DTOs.ConstantDto">
+            <summary>
+            Shared shape for the constant lookup tables. Each table has an integer id
+            column (AppointmentTypeID, ConcernTypeID, AttendanceStatusID,
+            AppointmentStatusID, SessionTypeID, SpecialistReferralID) and a single
+            text column (the type/status name, or SpecialistRole). The repository maps
+            <see cref="P:CounselLink.API.DTOs.ConstantDto.Id"/> and <see cref="P:CounselLink.API.DTOs.ConstantDto.Value"/> onto the correct per-type
+            stored-procedure parameter names.
+            </summary>
+        </member>
+        <member name="P:CounselLink.API.DTOs.ConstantDto.Id">
+            <summary>Integer primary key for the constant row.</summary>
+            <example>1</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.ConstantDto.Value">
+            <summary>The text value (type/status name, or specialist role).</summary>
+            <example>Student Initiated</example>
+        </member>
+        <member name="T:CounselLink.API.DTOs.CounselorDto">
+            <summary>Counselor record for spCounselor_* procedures.</summary>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CounselorDto.EmployeeID">
+            <summary>Counselor employee id.</summary>
+            <example>EMP0001</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CounselorDto.FirstName">
+            <summary>First name.</summary>
+            <example>Maria</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CounselorDto.LastName">
+            <summary>Last name.</summary>
+            <example>Santos</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CounselorDto.MiddleName">
+            <summary>Middle name.</summary>
+            <example>Reyes</example>
+        </member>
+        <member name="T:CounselLink.API.DTOs.CounselorAssignmentDto">
+            <summary>Counselor-to-scope assignment for spCounselorAssignment_* procedures.</summary>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CounselorAssignmentDto.AssignmentID">
+            <summary>Assignment id (0 for new).</summary>
+            <example>0</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CounselorAssignmentDto.EmployeeID">
+            <summary>Counselor employee id.</summary>
+            <example>EMP0001</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CounselorAssignmentDto.DepartmentID">
+            <summary>Department id/code.</summary>
+            <example>SACE</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CounselorAssignmentDto.ProgramID">
+            <summary>Program id/code.</summary>
+            <example>BSIT</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CounselorAssignmentDto.YearOrGradeLevel">
+            <summary>Year or grade level.</summary>
+            <example>4</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.CounselorAssignmentDto.SchoolYear">
+            <summary>School year (YYYY-MM-DD, start date).</summary>
+            <example>2026-08-01</example>
+        </member>
+        <member name="T:CounselLink.API.DTOs.NotificationDto">
+            <summary>Notification record for spNotification_Insert.</summary>
+        </member>
+        <member name="P:CounselLink.API.DTOs.NotificationDto.NotificationID">
+            <summary>Notification id (0 for new).</summary>
+            <example>0</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.NotificationDto.IDNumber">
+            <summary>Recipient student ID number.</summary>
+            <example>2023001</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.NotificationDto.Content">
+            <summary>Notification content.</summary>
+            <example>Your appointment is confirmed.</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.NotificationDto.NotificationStatus">
+            <summary>Read status (false = unread).</summary>
+            <example>false</example>
+        </member>
+        <member name="T:CounselLink.API.DTOs.NotificationFilterDto">
+            <summary>Filters for spNotification_Select.</summary>
+        </member>
+        <member name="P:CounselLink.API.DTOs.NotificationFilterDto.SearchNotificationID">
+            <summary>@SearchNotificationID</summary>
+            <example>7001</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.NotificationFilterDto.SearchIDNumber">
+            <summary>@SearchIDNumber</summary>
+            <example>2023001</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.NotificationFilterDto.SearchStatus">
+            <summary>@SearchStatus (read status).</summary>
+            <example>false</example>
+        </member>
+        <member name="T:CounselLink.API.DTOs.MonthlyReportFilterDto">
+            <summary>
+            Shared filter for the monthly report procedures. Maps to the
+            @SchoolYearStart, @ReportMonth, and optional @EmployeeID parameters.
+            </summary>
+        </member>
+        <member name="P:CounselLink.API.DTOs.MonthlyReportFilterDto.SchoolYearStart">
+            <summary>School year start (year).</summary>
+            <example>2026</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.MonthlyReportFilterDto.ReportMonth">
+            <summary>Report month (1-12).</summary>
+            <example>9</example>
+        </member>
+        <member name="P:CounselLink.API.DTOs.MonthlyReportFilterDto.EmployeeID">
+            <summary>Optional counselor employee id to scope the report.</summary>
+            <example>EMP0001</example>
+        </member>
+        <member name="T:CounselLink.API.DTOs.WriteResult">
+            <summary>
+            Standard response for write operations. Populated from the stored-procedure
+            output parameters @NewID and @Message. Serialized as { newId, message }.
+            </summary>
+        </member>
+        <member name="T:CounselLink.API.Repositories.AppointmentRepository">
+            <summary>
+            Dapper implementation for appointment CRUD and lifecycle stored procedures.
+            </summary>
+        </member>
+        <member name="T:CounselLink.API.Repositories.ClinicalRepository">
+            <summary>
+            Dapper implementation for clinical sessions, assessments, and follow-ups.
+            Parameter names match the CounselLinkDB stored-procedure signatures exactly.
+            </summary>
+        </member>
+        <member name="T:CounselLink.API.Repositories.ConstantRepository">
+            <summary>
+            Dapper implementation for the constant lookup tables. Each supported type
+            maps to a procedure family "spConst{Type}_{Action}" and a pair of column
+            parameter names: an integer id (@{Type}ID) and a text value (@{Type} or,
+            for SpecialistReferral, @SpecialistRole). All write procedures use a single
+            @Message OUTPUT (no @NewID).
+            </summary>
+        </member>
+        <member name="F:CounselLink.API.Repositories.ConstantRepository.Map">
+            <summary>
+            Maps each supported route type to (proc infix, id-param, value-param).
+            </summary>
+        </member>
+        <member name="T:CounselLink.API.Repositories.CounselorRepository">
+            <summary>Dapper implementation for spCounselor_* stored procedures.</summary>
+        </member>
+        <member name="T:CounselLink.API.Repositories.CounselorAssignmentRepository">
+            <summary>Dapper implementation for spCounselorAssignment_* stored procedures.</summary>
+        </member>
+        <member name="T:CounselLink.API.Repositories.IConstantRepository">
+            <summary>
+            CRUD over constant lookup tables. The concrete procedure name is computed as
+            "spConst{Type}_{Action}" where {Type} is one of the supported lookup types.
+            </summary>
+        </member>
+        <member name="M:CounselLink.API.Repositories.IConstantRepository.IsSupported(System.String)">
+            <summary>Returns true if the supplied type is a supported constant type.</summary>
+        </member>
+        <member name="T:CounselLink.API.Repositories.NotificationRepository">
+            <summary>Dapper implementation for spNotification_Select / spNotification_Insert.</summary>
+        </member>
+        <member name="T:CounselLink.API.Repositories.ReportRepository">
+            <summary>Dapper implementation for monthly analytics reports and the masterlist.</summary>
+        </member>
+        <member name="T:CounselLink.API.Swagger.ExampleSchemaFilter">
+             <summary>
+             Populates Swagger schema examples for DTO properties so the "Try it out"
+             editor pre-fills valid, CounselLinkDB-shaped test data instead of the
+             generic "string" / 0 placeholders.
+            
+             Resolution order per property:
+               1. The property's XML &lt;example&gt; doc comment (authored on the DTO), if present.
+               2. A type-based fallback (dates as YYYY-MM-DD, times as HH:mm:ss, etc.).
+             </summary>
+        </member>
+        <member name="T:CounselLink.API.Swagger.JsonNodeFactory">
+            <summary>Builds an OpenAPI example node from a raw string, typed per schema needs.</summary>
+        </member>
+    </members>
+</doc>
