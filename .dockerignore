@@ -1,0 +1,18 @@
+
+**/bin/
+**/obj/
+.git/
+.vs/
+.idea/
+
+# Local configuration and secrets
+appsettings*.json
+.env
+.env.*
+**/secrets.json
+
+# Files unnecessary for the API container
+deployment/
+scripts/
+README_RECOVERY.md
+*.zip
