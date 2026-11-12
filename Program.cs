@@ -5,28 +5,41 @@ using CounselLink.API.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Controllers
+// ==========================================
+// CONTROLLERS
+// ==========================================
 builder.Services.AddControllers();
 
-// CORS for Angular 8 development frontends
+// ==========================================
+// CORS - ANGULAR FRONTEND
+// ==========================================
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AngularDev", policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        policy.WithOrigins(
+                "http://localhost:4800",
+                "http://localhost:4200"
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod();
     });
 });
 
-// Swagger / OpenAPI
+// ==========================================
+// SWAGGER / OPENAPI
+// ==========================================
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.SchemaFilter<ExampleSchemaFilter>();
 
-    var xmlFile = $"{typeof(Program).Assembly.GetName().Name}.xml";
-    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    var xmlFile =
+        $"{typeof(Program).Assembly.GetName().Name}.xml";
+
+    var xmlPath =
+        Path.Combine(AppContext.BaseDirectory, xmlFile);
 
     if (File.Exists(xmlPath))
     {
@@ -34,28 +47,76 @@ builder.Services.AddSwaggerGen(options =>
     }
 });
 
-// Database connection
-builder.Services.AddScoped<IDbConnectionFactory, SqlConnectionFactory>();
+// ==========================================
+// DATABASE CONNECTION
+// ==========================================
+builder.Services.AddScoped<
+    IDbConnectionFactory,
+    SqlConnectionFactory>();
 
-// Repositories
-builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
-builder.Services.AddScoped<IClinicalRepository, ClinicalRepository>();
-builder.Services.AddScoped<IConstantRepository, ConstantRepository>();
-builder.Services.AddScoped<ICounselorRepository, CounselorRepository>();
-builder.Services.AddScoped<ICounselorAssignmentRepository, CounselorAssignmentRepository>();
-builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
-builder.Services.AddScoped<IReportRepository, ReportRepository>();
+// ==========================================
+// REPOSITORIES
+// ==========================================
 
+// Appointment Repository
+builder.Services.AddScoped<
+    IAppointmentRepository,
+    AppointmentRepository>();
+
+// Clinical Repository
+builder.Services.AddScoped<
+    IClinicalRepository,
+    ClinicalRepository>();
+
+// Constants Repository
+builder.Services.AddScoped<
+    IConstantRepository,
+    ConstantRepository>();
+
+// Counselor Repository
+builder.Services.AddScoped<
+    ICounselorRepository,
+    CounselorRepository>();
+
+// Counselor Assignment Repository
+builder.Services.AddScoped<
+    ICounselorAssignmentRepository,
+    CounselorAssignmentRepository>();
+
+// NEW: Counselor Schedule Repository
+builder.Services.AddScoped<
+    ICounselorScheduleRepository,
+    CounselorScheduleRepository>();
+
+// Notification Repository
+builder.Services.AddScoped<
+    INotificationRepository,
+    NotificationRepository>();
+
+// Report Repository
+builder.Services.AddScoped<
+    IReportRepository,
+    ReportRepository>();
+
+// ==========================================
+// BUILD APPLICATION
+// ==========================================
 var app = builder.Build();
 
-// Swagger available for local development and staging
-if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
+// ==========================================
+// SWAGGER
+// ==========================================
+// Enable Swagger in development/staging.
+if (app.Environment.IsDevelopment() ||
+    app.Environment.IsStaging())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// Basic health check
+// ==========================================
+// HEALTH CHECK
+// ==========================================
 app.MapGet("/health", () =>
     Results.Ok(new
     {
@@ -64,12 +125,17 @@ app.MapGet("/health", () =>
     })
 );
 
-// Database health check - local development only
+// ==========================================
+// DATABASE HEALTH CHECK
+// ==========================================
 if (app.Environment.IsDevelopment())
 {
-    app.MapGet("/health/db", (IDbConnectionFactory factory) =>
+    app.MapGet("/health/db",
+        (IDbConnectionFactory factory) =>
     {
-        using var connection = factory.CreateConnection();
+        using var connection =
+            factory.CreateConnection();
+
         connection.Open();
 
         return Results.Ok(new
@@ -80,17 +146,27 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-// HTTPS for hosted environments
+// ==========================================
+// HTTPS REDIRECTION
+// ==========================================
 if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
 }
 
-// Routing and Angular CORS
+// ==========================================
+// ROUTING AND CORS
+// ==========================================
 app.UseRouting();
+
 app.UseCors("AngularDev");
 
-// Controller endpoints
+// ==========================================
+// MAP API CONTROLLERS
+// ==========================================
 app.MapControllers();
 
+// ==========================================
+// RUN APPLICATION
+// ==========================================
 app.Run();

@@ -7,6 +7,8 @@ namespace CounselLink.API.DTOs;
 /// dbo.spAppointment_Update parameters exactly (the appointment id comes from
 /// the route and is supplied as @AppointmentID by the repository).
 /// </summary>
+/// 
+
 public class UpdateAppointmentDto
 {
     /// <summary>Appointment status id.</summary>
@@ -25,9 +27,9 @@ public class UpdateAppointmentDto
     /// <example>Academic stress and time management</example>
     public string? ConcernDescription { get; set; }
 
-    /// <summary>Free-text detail when the concern type is "Other".</summary>
-    /// <example>Difficulty balancing part-time work and studies</example>
-    public string? OtherConcernDetail { get; set; }
+    /// <summary>Selected concern category ID (1-8).</summary>
+    /// <example>1</example>
+    public int? ConcernTypeID { get; set; }
 }
 
 /// <summary>
@@ -73,13 +75,13 @@ public class CreateAppointmentDto
     /// <example>1</example>
     public int? AttendanceStatusID { get; set; }
 
-    /// <summary>Primary concern description.</summary>
+    /// <summary>Selected concern category ID (1-8).</summary>
+    /// <example>1</example>
+    public int? ConcernTypeID { get; set; }
+
+    /// <summary>Student's explanation of the concern.</summary>
     /// <example>Academic stress and time management</example>
     public string? ConcernDescription { get; set; }
-
-    /// <summary>Free-text detail when the concern type is "Other".</summary>
-    /// <example>Difficulty balancing part-time work and studies</example>
-    public string? OtherConcernDetail { get; set; }
 
     /// <summary>Who referred the student, if applicable.</summary>
     /// <example>Prof. Dela Cruz</example>

@@ -51,10 +51,14 @@ public sealed class AppointmentRepository : IAppointmentRepository
         parameters.Add("@AppointmentDate", dto.AppointmentDate);
         parameters.Add("@AppointmentTime", dto.AppointmentTime);
         parameters.Add("@AppointmentTypeID", dto.AppointmentTypeID);
-        parameters.Add("@AppointmentStatusID", dto.AppointmentStatusID);
-        parameters.Add("@AttendanceStatusID", dto.AttendanceStatusID);
+        // Included by the non-destructive spAppointment_Insert migration.
+        // Must be installed in the database before deploying this repository change.
+        parameters.Add("@ConcernTypeID", dto.ConcernTypeID, DbType.Int32);
+        // Student-created appointments always start Requested (1), attendance Pending (1).
+        // Never trust caller-supplied lifecycle status IDs during creation.
+        parameters.Add("@AppointmentStatusID", 1, DbType.Int32);
+        parameters.Add("@AttendanceStatusID", 1, DbType.Int32);
         parameters.Add("@ConcernDescription", dto.ConcernDescription);
-        parameters.Add("@OtherConcernDetail", dto.OtherConcernDetail);
         parameters.Add("@ReferredBy", dto.ReferredBy);
         parameters.Add("@ReferralDate", dto.ReferralDate);
         parameters.AddStandardOutputs();
@@ -76,7 +80,7 @@ public sealed class AppointmentRepository : IAppointmentRepository
         parameters.Add("@AttendanceStatusID", dto.AttendanceStatusID);
         parameters.Add("@RescheduleNote", dto.RescheduleNote);
         parameters.Add("@ConcernDescription", dto.ConcernDescription);
-        parameters.Add("@OtherConcernDetail", dto.OtherConcernDetail);
+        parameters.Add("@ConcernTypeID", dto.ConcernTypeID, DbType.Int32);
         // spAppointment_Update declares only @Message OUTPUT (no @NewID).
         parameters.AddMessageOutput();
 
