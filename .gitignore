@@ -15,3 +15,5 @@ appsettings.Production.json
 
 # Local ASP.NET Core configuration
 appsettings*.json
+
+Program.before-*.cs.bak
