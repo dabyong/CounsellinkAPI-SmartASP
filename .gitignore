@@ -17,3 +17,5 @@ appsettings.Production.json
 appsettings*.json
 
 Program.before-*.cs.bak
+
+appsettings.TestCleanup.json
