@@ -63,6 +63,12 @@ public class CreateAppointmentDto
     /// <example>08:30:00</example>
     public TimeSpan? AppointmentTime { get; set; }
 
+    /// <summary>Preferred start time (HH:mm:ss); overrides legacy appointmentTime.</summary>
+    public TimeSpan? StartTime { get; set; }
+
+    /// <summary>Preferred end time (HH:mm:ss).</summary>
+    public TimeSpan? EndTime { get; set; }
+
     /// <summary>Appointment type id.</summary>
     /// <example>1</example>
     public int? AppointmentTypeID { get; set; }
@@ -174,6 +180,9 @@ public class ConfirmAppointmentDto
     /// <summary>Confirmed time (HH:mm:ss).</summary>
     /// <example>08:30:00</example>
     public TimeSpan? ConfirmedTime { get; set; }
+
+    public TimeSpan? StartTime { get; set; }
+    public TimeSpan? EndTime { get; set; }
 }
 
 /// <summary>Input for spStudentConfirmAppointment and spStudentAcceptReschedule.</summary>
@@ -190,13 +199,16 @@ public class RescheduleDto
 {
     /// <summary>New start date/time (ISO 8601).</summary>
     /// <example>2026-11-02T08:30:00</example>
-    [Required]
-    public DateTime NewStartDate { get; set; }
+    public DateTime? NewStartDate { get; set; }
 
     /// <summary>New end date/time (ISO 8601).</summary>
     /// <example>2026-11-02T09:15:00</example>
-    [Required]
-    public DateTime NewEndDate { get; set; }
+    public DateTime? NewEndDate { get; set; }
+
+    /// <summary>Preferred date+startTime+endTime; old newStartDate/newEndDate still accepted.</summary>
+    public DateTime? AppointmentDate { get; set; }
+    public TimeSpan? StartTime { get; set; }
+    public TimeSpan? EndTime { get; set; }
 
     /// <summary>Reschedule note (required by the procedure).</summary>
     /// <example>Counselor unavailable on the original date.</example>

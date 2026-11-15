@@ -49,7 +49,9 @@ public sealed class AppointmentRepository : IAppointmentRepository
         parameters.Add("@ProgramOrCourse", dto.ProgramOrCourse);
         parameters.Add("@EmployeeID", dto.EmployeeID);
         parameters.Add("@AppointmentDate", dto.AppointmentDate);
-        parameters.Add("@AppointmentTime", dto.AppointmentTime);
+        parameters.Add("@AppointmentTime", dto.AppointmentTime ?? dto.StartTime);
+        parameters.Add("@StartTime", dto.StartTime ?? dto.AppointmentTime);
+        parameters.Add("@EndTime", dto.EndTime);
         parameters.Add("@AppointmentTypeID", dto.AppointmentTypeID);
         // Included by the non-destructive spAppointment_Insert migration.
         // Must be installed in the database before deploying this repository change.
@@ -115,7 +117,9 @@ public sealed class AppointmentRepository : IAppointmentRepository
         parameters.Add("@AppointmentID", id);
         parameters.Add("@EmployeeID", dto.EmployeeID);
         parameters.Add("@ConfirmedDate", dto.ConfirmedDate);
-        parameters.Add("@ConfirmedTime", dto.ConfirmedTime);
+        parameters.Add("@ConfirmedTime", dto.ConfirmedTime ?? dto.StartTime);
+        parameters.Add("@StartTime", dto.StartTime ?? dto.ConfirmedTime);
+        parameters.Add("@EndTime", dto.EndTime);
         // spConfirmAppointment declares only @Message OUTPUT (no @NewID).
         parameters.Add("@Message", dbType: DbType.String, direction: ParameterDirection.Output, size: 255);
 
@@ -164,8 +168,16 @@ public sealed class AppointmentRepository : IAppointmentRepository
         var parameters = new DynamicParameters();
         // spRescheduleAppointment: @AppointmentID, @NewStartDate, @NewEndDate, @RescheduleNote, @Message.
         parameters.Add("@AppointmentID", id, DbType.Int32);
-        parameters.Add("@NewStartDate", dto.NewStartDate);
-        parameters.Add("@NewEndDate", dto.NewEndDate);
+        var newStart = dto.AppointmentDate.HasValue && dto.StartTime.HasValue
+            ? dto.AppointmentDate.Value.Date.Add(dto.StartTime.Value)
+            : dto.NewStartDate;
+        var newEnd = dto.AppointmentDate.HasValue && dto.EndTime.HasValue
+            ? dto.AppointmentDate.Value.Date.Add(dto.EndTime.Value)
+            : dto.NewEndDate;
+        if (!newStart.HasValue || !newEnd.HasValue)
+            throw new ArgumentException("Provide appointmentDate, startTime and endTime, or the legacy NewStartDate/NewEndDate.");
+        parameters.Add("@NewStartDate", newStart.Value);
+        parameters.Add("@NewEndDate", newEnd.Value);
         parameters.Add("@RescheduleNote", dto.RescheduleNote);
         parameters.AddMessageOutput();
 

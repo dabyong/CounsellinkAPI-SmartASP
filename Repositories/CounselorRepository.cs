@@ -98,7 +98,9 @@ public sealed class CounselorAssignmentRepository : ICounselorAssignmentReposito
         parameters.Add("@DepartmentID", dto.DepartmentID);
         parameters.Add("@ProgramID", dto.ProgramID);
         parameters.Add("@YearOrGradeLevel", dto.YearOrGradeLevel);
-        parameters.Add("@SchoolYear", dto.SchoolYear);
+        var today = DateTime.UtcNow.AddHours(8);
+        var currentSchoolYear = new DateTime(today.Month >= 8 ? today.Year : today.Year - 1, 8, 1);
+        parameters.Add("@SchoolYear", dto.SchoolYear?.Date ?? currentSchoolYear);
         parameters.AddStandardOutputs();
 
         await connection.ExecuteAsync(

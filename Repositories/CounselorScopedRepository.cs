@@ -23,7 +23,8 @@ public sealed class CounselorScopedRepository : ICounselorScopedRepository
             """
             SELECT EmployeeID, DepartmentID, ProgramID, YearOrGradeLevel, SchoolYear
             FROM dbo.CounselorAssignment
-            WHERE EmployeeID = @EmployeeID AND SchoolYear = @SchoolYear
+            WHERE EmployeeID = @EmployeeID
+              AND (SchoolYear = @SchoolYear OR SchoolYear IS NULL)
             ORDER BY DepartmentID, YearOrGradeLevel
             """,
             new { EmployeeID = employeeId, SchoolYear = schoolYear.Date });

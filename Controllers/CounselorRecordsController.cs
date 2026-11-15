@@ -30,11 +30,11 @@ public sealed class CounselorRecordsController : ControllerBase
     {
         if (string.IsNullOrWhiteSpace(employeeId) || employeeId.Trim().Length > 7)
             return BadRequest(new { error = "employeeId is required (e.g., EMP0001)." });
-        if (!schoolYear.HasValue || schoolYear.Value == default)
-            return BadRequest(new { error = "schoolYear is required (YYYY-MM-DD)." });
-
+        // If not supplied, use the August 1 start of the current Philippine school year.
+        var today = DateTime.UtcNow.AddHours(8);
+        var autoYear = new DateTime(today.Month >= 8 ? today.Year : today.Year - 1, 8, 1);
         var id = employeeId.Trim().ToUpperInvariant();
-        var year = schoolYear.Value.Date;
+        var year = schoolYear?.Date ?? autoYear;
 
         try
         {

@@ -18,6 +18,7 @@ public class ClinicalController : ControllerBase
     public async Task<IActionResult> InsertSession([FromBody] CounselingSessionDto dto)
     {
         try { return Ok(await _repository.InsertSessionAsync(dto)); }
+        catch (ArgumentException ex) { return BadRequest(new { error = ex.Message }); }
         catch (SqlException ex) { return BadRequest(new { error = ex.Message }); }
     }
 
@@ -25,7 +26,22 @@ public class ClinicalController : ControllerBase
     [HttpGet("sessions")]
     public async Task<IActionResult> SelectSessions([FromQuery] CounselingSessionFilterDto filter)
     {
-        try { return Ok(await _repository.SelectSessionsAsync(filter)); }
+        try
+        {
+            var rows = await _repository.SelectSessionsAsync(filter);
+            var normalized = rows.Select(row =>
+            {
+                var values = (IDictionary<string, object>)row;
+                var result = values.ToDictionary(k => k.Key, v => (object?)v.Value,
+                    StringComparer.OrdinalIgnoreCase);
+                if (values.TryGetValue("SessionStartTime", out var start) && start is DateTime startDate)
+                    result["startTime"] = startDate.TimeOfDay;
+                if (values.TryGetValue("SessionEndTime", out var end) && end is DateTime endDate)
+                    result["endTime"] = endDate.TimeOfDay;
+                return result;
+            });
+            return Ok(normalized);
+        }
         catch (SqlException ex) { return BadRequest(new { error = ex.Message }); }
     }
 

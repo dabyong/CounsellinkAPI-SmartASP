@@ -74,6 +74,7 @@ public class AppointmentsController : ControllerBase
     public async Task<IActionResult> Reschedule(int id, [FromBody] RescheduleDto dto)
     {
         try { return Ok(await _repository.RescheduleAsync(id, dto)); }
+        catch (ArgumentException ex) { return BadRequest(new { error = ex.Message }); }
         catch (SqlException ex) { return BadRequest(new { error = ex.Message }); }
     }
 

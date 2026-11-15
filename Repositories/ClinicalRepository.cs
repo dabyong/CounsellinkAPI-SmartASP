@@ -29,8 +29,16 @@ public sealed class ClinicalRepository : IClinicalRepository
         parameters.Add("@SessionDate", dto.SessionDate);
         parameters.Add("@SessionTypeID", dto.SessionTypeID);
         parameters.Add("@GeneralNotes", dto.GeneralNotes);
-        parameters.Add("@SessionStartTime", dto.SessionStartTime);
-        parameters.Add("@SessionEndTime", dto.SessionEndTime);
+        var start = dto.StartTime.HasValue
+            ? dto.SessionDate.Date.Add(dto.StartTime.Value) : dto.SessionStartTime;
+        var end = dto.EndTime.HasValue
+            ? dto.SessionDate.Date.Add(dto.EndTime.Value) : dto.SessionEndTime;
+        if (!start.HasValue)
+            throw new ArgumentException("startTime or sessionStartTime is required.");
+        if (end.HasValue && end.Value <= start.Value)
+            throw new ArgumentException("endTime must be later than startTime.");
+        parameters.Add("@SessionStartTime", start.Value);
+        parameters.Add("@SessionEndTime", end);
         parameters.AddStandardOutputs();
 
         await connection.ExecuteAsync(

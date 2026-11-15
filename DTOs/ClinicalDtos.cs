@@ -33,8 +33,13 @@ public class CounselingSessionDto
 
     /// <summary>Session start time (ISO 8601 UTC).</summary>
     /// <example>2026-10-26T08:30:00Z</example>
-    [Required]
-    public DateTime SessionStartTime { get; set; }
+    public DateTime? SessionStartTime { get; set; }
+
+    /// <summary>Preferred time-only start field (HH:mm:ss).</summary>
+    public TimeSpan? StartTime { get; set; }
+
+    /// <summary>Preferred time-only end field (HH:mm:ss).</summary>
+    public TimeSpan? EndTime { get; set; }
 
     /// <summary>Session end time (ISO 8601 UTC).</summary>
     /// <example>2026-10-26T09:15:00Z</example>
