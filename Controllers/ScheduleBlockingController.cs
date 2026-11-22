@@ -143,7 +143,10 @@ public sealed class ScheduleBlockingController : ControllerBase
                                 SELECT 1 FROM dbo.Appointment a
                                 WHERE a.EmployeeID = @id
                                   AND a.AppointmentDate = @date
-                                  AND a.AppointmentStatusID IN (1, 2, 3)
+                                  -- Only actively confirmed appointments occupy normal slots.
+                                  -- No-Show (attendance 3) is historical and does not book a slot.
+                                  AND a.AppointmentStatusID = 2
+                                  AND a.AttendanceStatusID <> 3
                                   AND COALESCE(a.StartTime, a.AppointmentTime) < @end
                                   AND COALESCE(
                                       a.EndTime,
